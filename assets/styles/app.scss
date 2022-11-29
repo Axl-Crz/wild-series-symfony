@@ -1,0 +1,18 @@
+$primary-color: #2d2d2a;
+$secondary-color: #353831;
+$third-color: #38423b;
+$fourth-color: #3f5e5a;
+$fifth-color: #98dfea;
+
+// the ~ allows you to reference things in node_modules
+@import "~bootstrap/scss/bootstrap";
+
+body {
+    background-color: $third-color;
+}
+nav {
+    background-color: $primary-color;
+}
+* {
+    color: $fifth-color;
+}
