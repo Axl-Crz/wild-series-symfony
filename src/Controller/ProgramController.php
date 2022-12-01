@@ -2,16 +2,17 @@
 // src/Controller/ProgramController.php
 namespace App\Controller;
 
+use App\Repository\SeasonRepository;
 use App\Repository\CategoryRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\ProgramRepository;
 
-// #[Route('/program/', name: 'program_')]
+#[Route('/program', name: 'program_')]
 class ProgramController extends AbstractController
 {
-    #[Route('/program/', name: 'program_index')]
+    #[Route('/', name: 'index')]
     public function index(ProgramRepository $programRepository, CategoryRepository $categoryRepository): Response
     {
         $categories = $categoryRepository->findAll();
@@ -21,7 +22,7 @@ class ProgramController extends AbstractController
         ]);
     }
 
-    #[Route('/program/{id<\d+>}', name: 'program_show', methods: ['GET'])]
+    #[Route('/program/{id<\d+>}', name: 'show')]
     public function show(int $id, ProgramRepository $programRepository): Response
     {
         $program = $programRepository->findOneBy(['id' => $id]);
@@ -34,5 +35,23 @@ class ProgramController extends AbstractController
     return $this->render('program/show.html.twig', [
         'program' => $program,
     ]);
+    }
+    #[Route('/{programid}/seasons/{seasonid}', name: 'season_show')]
+    public function showSeason(int $programid, int $seasonid, ProgramRepository $programRepository, SeasonRepository $seasonRepository)
+    {
+        $program = $programRepository->findOneBy(
+            ['id' => $programid],
+        );
+        $season = $seasonRepository->findOneBy(
+            [
+                'program' => $program,
+                'id' => $seasonid,
+            ]
+        );
+
+        return $this->render('program/season_show.html.twig', [
+            'season' => $season,
+            'program' => $program,
+        ]);
     }
 }
