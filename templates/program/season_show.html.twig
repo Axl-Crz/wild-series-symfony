@@ -15,20 +15,16 @@
             {{ program.category.name }}</p>
 
         <div>
+            <ul>
             {% for episode in season.episodes %}
-                <p>Episode
-                    {{episode.number}}</p>
-                <p>Description
-                    {{episode.synopsis}}</p>
-                <a href="{{ path('program_show', { id: program.id} ) }}">
-                    Details
-                </a>
-                <br>
+                <li>
+                    <a href="{{ path("program_episode_show", {"program": program.id, "season": season.id, "episode":episode.id }) }}">  {{episode.number}} - <i>{{ episode.title }}</i></a>
+                </li>
 
             {% endfor %}
-
+            </ul>
             <a href="{{ path('program_index') }}">
-                Program list
+                Retour à la liste des programmes
             </a>
         </div>
     </div>
