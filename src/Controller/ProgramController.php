@@ -12,7 +12,7 @@ use App\Entity\Season;
 use App\Entity\Episode;
 use App\Form\ProgramType;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 
 #[Route('/program', name: 'program_')]
 class ProgramController extends AbstractController
@@ -72,10 +72,28 @@ class ProgramController extends AbstractController
     #[Route('/{program}/season/{season}/episode/{episode}', name:'episode_show',  methods: ['GET'])]
     public function showEpisode(Program $program, Season $season, Episode $episode): Response
     {
+        if (!$program) {
+            throw $this->createNotFoundException(
+                'No program with id : ' . $program->getId() . 'found in program\'s table.'
+            );
+        }
+
+        if (!$season) {
+            throw $this->createNotFoundException(
+                'No season with id : ' . $season->getId() . 'found in season\'s table.'
+            );
+        }
+
+        if (!$episode) {
+            throw $this->createNotFoundException(
+                'No season with id : ' . $episode->getId() . 'found in season\'s table.'
+            );
+        }
+
         return $this->render('program/episode.html.twig', [
             'program' => $program,
             'season' => $season,
-            'episode' => $episode
+            'episode' => $episode,
         ]);
     }
 }
